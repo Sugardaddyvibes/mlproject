@@ -13,7 +13,7 @@ import numpy as np
 
 from src.exception import CustomExecption
 from src.logger import logging
-from src.utlis import save_object
+from src.utlis import save_object,evaluate_model
 
 
 
@@ -37,22 +37,19 @@ class DataTransformation:
                      ("StandardScaler",StandardScaler())
                 ]
                 )
-            cat_Pipeline= Pipeline(
+            cat_Pipelines = Pipeline(
                 steps=[
-                    ("imputer",SimpleImputer(strategy=("most_frequent"))),
-                    ("onehotencoder",OneHotEncoder()),
-                    ("StandardScaler",StandardScaler())
-
-
-                ]
-                
-            )
+                    ("imputer", SimpleImputer(strategy="most_frequent")),
+                    ("onehotencoder", OneHotEncoder()), 
+                    ("StandardScaler", StandardScaler(with_mean=False))
+                      ]
+                )
             logging.info(f"Numerical columns:{numerical_features}")
             logging.info(f"Categorical columns:{cat_features}")
             preprocessor= ColumnTransformer(
                 [
                     ("num_pipeline",num_pipeline,numerical_features),
-                    ("cat_Pipeline",cat_Pipeline,cat_features) 
+                    ("cat_Pipeline",cat_Pipelines,cat_features) 
                 ]
                 )
             return preprocessor
@@ -69,15 +66,15 @@ class DataTransformation:
 
             preproccessing_obj=self.get_data_tranformed()
 
-            target_column_name='math score'
+            target_column_names='math score'
             numerical_features=['reading score', 'writing score']
             
             
-            input_feature_train_df=train_df.drop(columns=[ target_column_name],axis=1)
-            target_feature_train_df=train_df[target_column_name]
+            input_feature_train_df=train_df.drop(columns=[ target_column_names],axis=1)
+            target_feature_train_df=train_df[target_column_names]
 
-            input_feature_test_df=test_df.drop(columns=[ target_column_name],axis=1)
-            target_feature_test_df=test_df[target_column_name]
+            input_feature_test_df=test_df.drop(columns=[ target_column_names],axis=1)
+            target_feature_test_df=test_df[target_column_names]
 
 
             logging.info(
