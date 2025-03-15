@@ -29,8 +29,15 @@ class DataTransformation:
         this function is responsible for data transformation
         """
         try:
-            numerical_features=['reading score', 'writing score']
-            cat_features=['gender', 'race/ethnicity', 'parental level of education', 'lunch','test preparation course']
+            numerical_features=['reading_score', 'writing_score']
+            cat_features=[
+                "gender",
+                "race_ethnicity",
+                "parental_level_of_education",
+                "lunch",
+                "test_preparation_course",
+            ]
+
             num_pipeline = Pipeline(
                 steps=[
                      ("imputer",SimpleImputer(strategy=("median"))),
@@ -66,14 +73,13 @@ class DataTransformation:
 
             preproccessing_obj=self.get_data_tranformed()
 
-            target_column_names='math score'
-            numerical_features=['reading score', 'writing score']
+            target_column_names='math_score'
             
             
-            input_feature_train_df=train_df.drop(columns=[ target_column_names],axis=1)
+            input_feature_train_df=train_df.drop(columns=[target_column_names],axis=1)
             target_feature_train_df=train_df[target_column_names]
 
-            input_feature_test_df=test_df.drop(columns=[ target_column_names],axis=1)
+            input_feature_test_df=test_df.drop(columns=[target_column_names],axis=1)
             target_feature_test_df=test_df[target_column_names]
 
 
